@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xry.product.mapper.ProductMapper">
+    <cache eviction="LRU" readOnly="true" flushInterval="60000" size="512"></cache>
+    
+    <resultMap id="productMap" type="product">
+        <result column="productID" property="productID"></result>
+        <result column="product_name" property="productName"></result>
+        <result column="income_price" property="incomePrice"></result>
+        <result column="quantity" property="quantity"></result>
+        <result column="sales_price" property="salesPrice"></result>
+        <result column="income_time" property="incomeTime"></result>
+        <result column="provider_name" property="providerName"></result>
+        <result column="category_name" property="categoryName"></result>
+    </resultMap>
+
+    <select id="findAll" resultMap="productMap">
+         SELECT pd.productID,pd.product_name,pd.sales_price,pd.income_price,
+                pd.quantity,pd.income_time,pv.provider_name,cg.category_name
+           FROM (`products` pd
+           LEFT JOIN providers pv
+           on pd.providerID = pv.providerID )
+           LEFT JOIN categories cg
+           on pd.categoryID = cg.categoryID
+    </select>
+
+</mapper>
